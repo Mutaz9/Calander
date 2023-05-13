@@ -357,6 +357,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        updateEvents();
                         let curDay = -1;
                         for (let i = 0; i < document.getElementsByClassName("day").length; i++) {
                             let dayData = document.getElementsByClassName("day")[i];
