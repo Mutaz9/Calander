@@ -343,34 +343,34 @@
                     console.log(data.success ? "You've created a event!" : `You did not create a event: ${data.message}`);
                     if (data.success) {
                         document.getElementsByClassName("createEventForm")[0].remove();
-                    }
-                })
-                .catch(err => console.error(err));
-
-            // updating event counter where event is created
-            let eventCountData = { 'year': currentMonth.year, 'month': currentMonth.month, 'date': eventDate }
-            fetch("getSingleCount.php", {
-                method: 'POST',
-                body: JSON.stringify(eventCountData),
-                headers: { 'content-type': 'application/json' }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updateEvents();
-                        let curDay = -1;
-                        for (let i = 0; i < document.getElementsByClassName("day").length; i++) {
-                            let dayData = document.getElementsByClassName("day")[i];
-                            if (!dayData.firstChild) {
-                                curDay++;
-                            } else {
-                                break;
+                        
+                        // updating event counter where event is created
+                        let eventCountData = { 'year': currentMonth.year, 'month': currentMonth.month, 'date': eventDate }
+                        fetch("getSingleCount.php", {
+                            method: 'POST',
+                            body: JSON.stringify(eventCountData),
+                            headers: { 'content-type': 'application/json' }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateEvents();
+                                let curDay = -1;
+                                for (let i = 0; i < document.getElementsByClassName("day").length; i++) {
+                                    let dayData = document.getElementsByClassName("day")[i];
+                                    if (!dayData.firstChild) {
+                                        curDay++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                console.log(data.day + "d:c" + curDay);
+                                let dayData = document.getElementsByClassName("day")[Number(data.day) + curDay].firstChild;
+                                console.log(dayData);
+                                dayData.textContent = Number(data.day) + " (" + data.count + " Events)";
                             }
-                        }
-                        console.log(data.day + "d:c" + curDay);
-                        let dayData = document.getElementsByClassName("day")[Number(data.day) + curDay].firstChild;
-                        console.log(dayData);
-                        dayData.textContent = Number(data.day) + " (" + data.count + " Events)";
+                        })
+                        .catch(err => console.error(err));
                     }
                 })
                 .catch(err => console.error(err));
